@@ -92,3 +92,32 @@ func topKFrequent(nums []int, k int) []int {
 
 	return ans
 }
+
+
+func productExceptSelf(nums []int) []int {
+	freq := make(map[int]int, 64)
+	ans := make([]int, len(nums))
+
+	for _, n := range nums {
+		freq[n] += 1
+	}
+
+	for i, n := range nums {
+		ans[i] = 1
+		for k, v := range freq {
+			if ans[i] == 0 {
+				break
+			}
+			if k != n {
+				ans[i] *= powInt(k, v)
+			} else if v > 1 {
+				ans[i] *= powInt(k, v-1)
+			}
+		}
+	}
+	return ans
+}
+
+func powInt(x, y int) int {
+	return int(math.Pow(float64(x), float64(y)))
+}
