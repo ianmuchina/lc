@@ -2,6 +2,8 @@ package main
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestTwoSum(t *testing.T) {
@@ -55,5 +57,19 @@ func TestIsAnagram(t *testing.T) {
 		if isAnagram(v.s, v.t) != v.want {
 			t.Error("Error in containsDuplicate")
 		}
+	}
+}
+
+func TestProductExceptSelf(t *testing.T) {
+	want := []int{24, 12, 8, 6}
+
+	ans := productExceptSelf([]int{1, 2, 3, 4})
+	if !cmp.Equal(ans, want) {
+		t.Error("Error in Product Except Self")
+	}
+
+	ans = productExceptSelf_v1([]int{1, 2, 3, 4})
+	if !cmp.Equal(ans, want) {
+		t.Error("Error in Product Except Self v1")
 	}
 }

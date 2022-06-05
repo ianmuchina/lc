@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math"
+)
+
 func containsDuplicate(nums []int) bool {
 	// Map of numbers
 	m := make(map[int]int)
@@ -93,9 +97,33 @@ func topKFrequent(nums []int, k int) []int {
 	return ans
 }
 
-
+// Solution with for loops & slices
 func productExceptSelf(nums []int) []int {
-	freq := make(map[int]int, 64)
+	ans := make([]int, len(nums))
+	count := len(nums) - 1
+
+	ans[0] = 1
+	ans[count] = 1
+
+	// Add prefix to answer array
+	for i := 1; i <= count; i++ {
+		ans[i] = nums[i-1] * ans[i-1]
+	}
+
+	// Temporary variable to store postfix
+	postfix := 1
+	for i := count - 1; i >= 0; i-- {
+		// Calculate postfix
+		postfix = nums[i+1] * postfix
+		// Multiply Prefix & Postfix
+		ans[i] *= postfix
+	}
+	return ans
+}
+
+// Solution using hashtables
+func productExceptSelf_v1(nums []int) []int {
+	freq := make(map[int]int)
 	ans := make([]int, len(nums))
 
 	for _, n := range nums {
@@ -105,12 +133,9 @@ func productExceptSelf(nums []int) []int {
 	for i, n := range nums {
 		ans[i] = 1
 		for k, v := range freq {
-			if ans[i] == 0 {
-				break
-			}
 			if k != n {
 				ans[i] *= powInt(k, v)
-			} else if v > 1 {
+			} else if (k == n) && (v > 1) {
 				ans[i] *= powInt(k, v-1)
 			}
 		}
